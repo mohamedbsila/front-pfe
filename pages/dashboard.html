@@ -1,0 +1,173 @@
+<link rel="stylesheet" href="style/dashboard.css">
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon stat-icon-farmers" style="background: linear-gradient(135deg, #c8102e, #a00d25);"></div>
+        <div class="stat-info">
+            <h3>12,458</h3>
+            <p>Agriculteurs Enregistrés</p>
+        </div>
+        <div class="stat-trend positive">+8.2%</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon stat-icon-subsidies" style="background: linear-gradient(135deg, #28a745, #20853a);"></div>
+        <div class="stat-info">
+            <h3>3,245</h3>
+            <p>Demandes en Attente</p>
+        </div>
+        <div class="stat-trend negative">-2.4%</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon stat-icon-permits" style="background: linear-gradient(135deg, #007bff, #0056b3);"></div>
+        <div class="stat-info">
+            <h3>8,932</h3>
+            <p>Permis Délivrés</p>
+        </div>
+        <div class="stat-trend positive">+15.3%</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon stat-icon-programs" style="background: linear-gradient(135deg, #ffc107, #e0a800);"></div>
+        <div class="stat-info">
+            <h3>24</h3>
+            <p>Programmes Actifs</p>
+        </div>
+        <div class="stat-trend positive">+3</div>
+    </div>
+</div>
+
+<div class="dashboard-grid">
+    <div class="dashboard-card">
+        <div class="card-header">
+            <h3>Demandes Récentes</h3>
+            <button class="btn-link">Voir tout →</button>
+        </div>
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nom</th>
+                        <th>Type</th>
+                        <th>Date</th>
+                        <th>Statut</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#12458</td>
+                        <td>Mohamed Ben Ali</td>
+                        <td>Subvention</td>
+                        <td>23 Déc 2025</td>
+                        <td><span class="badge badge-pending">En attente</span></td>
+                        <td>
+                            <button class="btn-action btn-view" title="Voir">👁</button>
+                            <button class="btn-action btn-edit" title="Modifier">✎</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#12457</td>
+                        <td>Fatma Gharbi</td>
+                        <td>Permis</td>
+                        <td>23 Déc 2025</td>
+                        <td><span class="badge badge-approved">Approuvé</span></td>
+                        <td>
+                            <button class="btn-action btn-view" title="Voir">👁</button>
+                            <button class="btn-action btn-edit" title="Modifier">✎</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#12456</td>
+                        <td>Ahmed Trabelsi</td>
+                        <td>Autorisation</td>
+                        <td>22 Déc 2025</td>
+                        <td><span class="badge badge-rejected">Rejeté</span></td>
+                        <td>
+                            <button class="btn-action btn-view" title="Voir">👁</button>
+                            <button class="btn-action btn-edit" title="Modifier">✎</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#12455</td>
+                        <td>Samira Mansour</td>
+                        <td>Subvention</td>
+                        <td>22 Déc 2025</td>
+                        <td><span class="badge badge-pending">En attente</span></td>
+                        <td>
+                            <button class="btn-action btn-view" title="Voir">👁</button>
+                            <button class="btn-action btn-edit" title="Modifier">✎</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#12454</td>
+                        <td>Karim Sassi</td>
+                        <td>Permis</td>
+                        <td>21 Déc 2025</td>
+                        <td><span class="badge badge-approved">Approuvé</span></td>
+                        <td>
+                            <button class="btn-action btn-view" title="Voir">👁</button>
+                            <button class="btn-action btn-edit" title="Modifier">✎</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="dashboard-card">
+        <div class="card-header">
+            <h3>Activité Récente</h3>
+        </div>
+        <div class="activity-list">
+            <div class="activity-item">
+                <div class="activity-icon activity-icon-new" style="background: #c8102e;"></div>
+                <div class="activity-content">
+                    <p><strong>Nouvelle demande</strong> de Mohamed Ben Ali</p>
+                    <span class="activity-time">Il y a 5 minutes</span>
+                </div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-icon activity-icon-approved" style="background: #28a745;"></div>
+                <div class="activity-content">
+                    <p><strong>Permis approuvé</strong> pour Fatma Gharbi</p>
+                    <span class="activity-time">Il y a 12 minutes</span>
+                </div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-icon activity-icon-rejected" style="background: #dc3545;"></div>
+                <div class="activity-content">
+                    <p><strong>Demande rejetée</strong> pour Ahmed Trabelsi</p>
+                    <span class="activity-time">Il y a 1 heure</span>
+                </div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-icon activity-icon-document" style="background: #007bff;"></div>
+                <div class="activity-content">
+                    <p><strong>Document téléchargé</strong> par Samira Mansour</p>
+                    <span class="activity-time">Il y a 2 heures</span>
+                </div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-icon activity-icon-warning" style="background: #ffc107;"></div>
+                <div class="activity-content">
+                    <p><strong>Dossier incomplet</strong> - Karim Sassi</p>
+                    <span class="activity-time">Il y a 3 heures</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="dashboard-card">
+    <div class="card-header">
+        <h3>Statistiques Mensuelles</h3>
+        <select class="select-month">
+            <option>Décembre 2025</option>
+            <option>Novembre 2025</option>
+            <option>Octobre 2025</option>
+        </select>
+    </div>
+    <div class="chart-placeholder">
+        <p>📊 Graphique des demandes et approbations (Zone de graphique)</p>
+    </div>
+</div>

@@ -1,0 +1,35 @@
+/* Farmers Page Styles */
+.btn-action {
+    background: none;
+    border: none;
+    padding: 0.4rem 0.6rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: all 0.2s;
+    margin: 0 0.2rem;
+}
+
+.btn-view {
+    color: #2196F3;
+}
+
+.btn-view:hover {
+    background: rgba(33, 150, 243, 0.1);
+}
+
+.btn-edit {
+    color: #FF9800;
+}
+
+.btn-edit:hover {
+    background: rgba(255, 152, 0, 0.1);
+}
+
+.btn-delete {
+    color: #f44336;
+}
+
+.btn-delete:hover {
+    background: rgba(244, 67, 54, 0.1);
+}

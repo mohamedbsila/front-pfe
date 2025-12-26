@@ -1,0 +1,16 @@
+{
+  "name": "my-electron-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["agriculture", "ministry", "tunisia", "employee-app"],
+  "author": "Ministère de l'Agriculture - Tunisie",
+  "license": "ISC",
+  "description": "Application desktop pour les employés du Ministère de l'Agriculture",
+  "devDependencies": {
+    "electron": "^39.2.7"
+  }
+}

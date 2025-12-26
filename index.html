@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; img-src 'self' data:;">
+    <title>Ministère de l'Agriculture - Espace Employés</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Login Container (loaded from pages/login.html) -->
+    <div id="loginPage"></div>
+
+    <!-- Main App Container -->
+    <div class="app-container" style="display: none;">
+        <!-- Sidebar (loaded from pages/sidebar.html) -->
+        <div id="sidebarContainer" style="height: 100vh;"></div>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Top Bar (loaded from pages/topbar.html) -->
+            <div id="topbarContainer"></div>
+
+            <!-- Dynamic Content Area -->
+            <div class="content-area" id="contentArea">
+                <!-- Pages will be loaded here dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Modal -->
+    <div class="custom-modal" id="customModal">
+        <div class="modal-content">
+            <div class="modal-icon" id="modalIcon"></div>
+            <h3 id="modalTitle"></h3>
+            <p id="modalMessage"></p>
+            <div class="modal-buttons" id="modalButtons"></div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="sounds.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Load initial components on page load
+        async function loadComponent(url, containerId) {
+            try {
+                const response = await fetch(url);
+                const html = await response.text();
+                document.getElementById(containerId).innerHTML = html;
+            } catch (error) {
+                console.error(`Error loading ${url}:`, error);
+            }
+        }
+
+        // Initialize the app
+        async function initApp() {
+            // Load login page
+            await loadComponent('pages/login.html', 'loginPage');
+            
+            // Load static components (sidebar and topbar)
+            await loadComponent('pages/sidebar.html', 'sidebarContainer');
+            await loadComponent('pages/topbar.html', 'topbarContainer');
+            
+            // Load default dashboard page
+            await loadPage('dashboard');
+            
+            // Initialize settings after DOM is ready
+            if (typeof initSettings === 'function') {
+                initSettings();
+            }
+        }
+
+        // Load dynamic page content
+        async function loadPage(pageName) {
+            try {
+                const response = await fetch(`pages/${pageName}.html`);
+                const html = await response.text();
+                document.getElementById('contentArea').innerHTML = html;
+                
+                // Update active nav item
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                const activeItem = document.querySelector(`[onclick*="loadPage('${pageName}')"]`);
+                if (activeItem) {
+                    activeItem.classList.add('active');
+                }
+                
+                // Update page title and breadcrumb
+                const titles = {
+                    'dashboard': 'Tableau de Bord',
+                    'farmers': 'Gestion des Agriculteurs',
+                    'subsidies': 'Gestion des Subventions',
+                    'permits': 'Permis & Autorisations',
+                    'programs': 'Programmes Agricoles',
+                    'reports': 'Rapports et Statistiques',
+                    'resources': 'Ressources',
+                    'users': 'Gestion des Utilisateurs',
+                    'settings': 'Paramètres Système'
+                };
+                
+                const pageTitle = document.getElementById('page-title');
+                const breadcrumbCurrent = document.getElementById('breadcrumb-current');
+                
+                if (pageTitle) pageTitle.textContent = titles[pageName] || pageName;
+                if (breadcrumbCurrent) breadcrumbCurrent.textContent = titles[pageName] || pageName;
+                
+                // Play navigation sound
+                try {
+                    if (typeof playNavigationSound === 'function') {
+                        playNavigationSound();
+                    }
+                } catch(e) {
+                    console.log('Sound error:', e);
+                }
+                
+                // Reinitialize settings UI if on settings page
+                if (pageName === 'settings' && typeof initSettings === 'function') {
+                    initSettings();
+                }
+                
+            } catch (error) {
+                console.error(`Error loading page ${pageName}:`, error);
+                document.getElementById('contentArea').innerHTML = `
+                    <div style="text-align: center; padding: 4rem;">
+                        <h3>Erreur de Chargement</h3>
+                        <p style="color: #666; margin-top: 1rem;">Impossible de charger la page: ${pageName}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
