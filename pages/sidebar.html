@@ -2,14 +2,14 @@
 <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
         <div class="logo">
-            <div class="emblem">TN</div>
+            <img src="assets/Untitled (1).png" alt="Logo" class="sidebar-logo-img">
             <div class="logo-text">
-                <h1>Ministère Agriculture</h1>
-                <p>Espace Employés</p>
+                <h1>Bureau de Contrôle</h1>
+                <p>Unités de Production Agricole</p>
             </div>
         </div>
         <button class="sidebar-toggle-btn" onclick="toggleSidebar()" title="Réduire/Agrandir">
-            <span class="toggle-icon">☰</span>
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
         </button>
     </div>
 
@@ -39,6 +39,14 @@
             <a href="#" class="nav-item" onclick="loadPage('programs')">
                 <span class="icon icon-programs"></span>
                 <span class="nav-text">Programmes</span>
+            </a>
+            <a href="#" class="nav-item" onclick="loadPage('production')">
+                <span class="icon icon-subsidies"></span> <!-- Reusing icon for now -->
+                <span class="nav-text">Saisie Lait</span>
+            </a>
+            <a href="#" class="nav-item" onclick="loadPage('production-reports')">
+                <span class="icon icon-reports"></span>
+                <span class="nav-text">Rapports Lait</span>
             </a>
             <a href="#" class="nav-item" onclick="loadPage('reports')">
                 <span class="icon icon-reports"></span>

@@ -4,13 +4,26 @@
   "main": "index.js",
   "scripts": {
     "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "playwright test",
+    "test:security": "playwright test tests/security",
+    "test:ui": "playwright test tests/ui",
+    "test:interface": "playwright test tests/interface",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:report": "playwright show-report"
   },
-  "keywords": ["agriculture", "ministry", "tunisia", "employee-app"],
+  "keywords": [
+    "agriculture",
+    "ministry",
+    "tunisia",
+    "employee-app"
+  ],
   "author": "Ministère de l'Agriculture - Tunisie",
   "license": "ISC",
   "description": "Application desktop pour les employés du Ministère de l'Agriculture",
   "devDependencies": {
-    "electron": "^39.2.7"
+    "@playwright/test": "^1.57.0",
+    "electron": "^39.2.7",
+    "playwright": "^1.57.0"
   }
 }

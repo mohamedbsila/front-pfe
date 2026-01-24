@@ -1,35 +1,28 @@
 <!-- Login Page Component -->
 <div class="login-container" id="loginContainer">
+    <div class="login-bg-decoration"></div>
+    <div class="login-bg-watermark"></div>
+    <div class="login-bg-pattern"></div>
     <div class="login-box">
         <div class="login-header">
             <div class="login-logo">
-                <div class="login-emblem">TN</div>
+                <img src="assets/Untitled (1).png" alt="Logo Ministère" class="login-logo-img">
             </div>
-            <h2 class="login-title">Espace Employés</h2>
-            <p class="login-subtitle">Ministère de l'Agriculture - République Tunisienne</p>
+            <h2 class="login-title">Bureau de Contrôle</h2>
+            <p class="login-subtitle">des Unités de Production Agricole</p>
         </div>
 
         <form class="login-form" onsubmit="handleLogin(event)">
             <div class="form-group">
                 <label for="username">Nom d'utilisateur</label>
-                <input 
-                    type="text" 
-                    id="username" 
-                    class="form-input" 
-                    placeholder="Entrez votre nom d'utilisateur"
-                    required
-                >
+                <input type="text" id="username" class="form-input" placeholder="Entrez votre nom d'utilisateur"
+                    required>
             </div>
 
             <div class="form-group">
                 <label for="password">Mot de passe</label>
-                <input 
-                    type="password" 
-                    id="password" 
-                    class="form-input" 
-                    placeholder="Entrez votre mot de passe"
-                    required
-                >
+                <input type="password" id="password" class="form-input" placeholder="Entrez votre mot de passe"
+                    required>
             </div>
 
             <label class="form-checkbox">
@@ -40,6 +33,9 @@
             <button type="submit" class="btn-login">
                 Se connecter
             </button>
+            <div style="text-align: center; margin-top: 1rem; font-size: 0.9rem;">
+                <p>Nouveau ? <a href="#" onclick="toggleAuthMode(event)" style="color: #2c3e50; font-weight: bold;">Créer un compte</a></p>
+            </div>
         </form>
 
         <div class="login-footer">

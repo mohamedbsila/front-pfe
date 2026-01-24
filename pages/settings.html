@@ -1,85 +1,78 @@
-<link rel="stylesheet" href="style/settings.css">
+<link rel="stylesheet" href="style/dashboard.css">
 
-<div class="section-header-bar">
-    <h3>Paramètres Système</h3>
-</div>
+<div class="settings-container">
+    <!-- Appearance Section -->
+    <div class="dashboard-card">
+        <div class="card-header">
+            <h3>🎨 Apparence</h3>
+        </div>
 
-<div class="dashboard-card">
-    <div class="card-header">
-        <h3>Préférences de l'Application</h3>
-    </div>
-    <div style="padding: 1.5rem;">
-        <!-- Theme Setting -->
         <div class="setting-item">
             <div class="setting-info">
                 <div class="setting-icon setting-icon-theme"></div>
                 <div>
-                    <h5>Thème de l'Interface</h5>
-                    <p>Choisissez entre le mode clair et le mode sombre</p>
+                    <h5>Thème de l'interface</h5>
+                    <p>Choisissez entre le mode clair et sombre</p>
                 </div>
             </div>
-            <div class="setting-control">
-                <select id="themeSelect" class="setting-select" onchange="changeThemeFromSettings(this.value)">
-                    <option value="light">Mode Clair</option>
-                    <option value="dark">Mode Sombre</option>
-                </select>
-            </div>
+            <select id="themeSelect" class="select-month" onchange="changeThemeFromSettings(this.value)">
+                <option value="light">Clair</option>
+                <option value="dark">Sombre</option>
+            </select>
         </div>
 
         <div class="setting-divider"></div>
 
-        <!-- Sound Setting -->
+        <div class="setting-item">
+            <div class="setting-info">
+                <div class="setting-icon setting-icon-language"></div>
+                <div>
+                    <h5>Langue</h5>
+                    <p>Sélectionnez la langue de l'interface</p>
+                </div>
+            </div>
+            <select id="languageSelect" class="select-month" onchange="changeLanguage(this.value)">
+                <option value="fr">Français</option>
+                <option value="ar">العربية</option>
+                <option value="en">English</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Sound & Notifications Section -->
+    <div class="dashboard-card">
+        <div class="card-header">
+            <h3>🔔 Sons et Notifications</h3>
+        </div>
+
         <div class="setting-item">
             <div class="setting-info">
                 <div class="setting-icon setting-icon-sound"></div>
                 <div>
-                    <h5>Effets Sonores</h5>
-                    <p>Activer ou désactiver les sons des boutons</p>
+                    <h5>Effets sonores</h5>
+                    <p>Activer ou désactiver les sons de l'interface</p>
                 </div>
             </div>
-            <div class="setting-control">
-                <label class="toggle-switch">
-                    <input type="checkbox" id="soundToggle" checked onchange="toggleSound(this.checked)">
-                    <span class="toggle-slider"></span>
-                </label>
-                <span class="toggle-label" id="soundLabel">Activé</span>
-            </div>
+            <label class="toggle-switch">
+                <input type="checkbox" id="soundToggle" onchange="toggleSound(this.checked)" checked>
+                <span class="toggle-slider"></span>
+            </label>
         </div>
 
         <div class="setting-divider"></div>
 
-        <!-- Sound Volume -->
         <div class="setting-item">
             <div class="setting-info">
                 <div class="setting-icon setting-icon-volume"></div>
                 <div>
-                    <h5>Volume Sonore</h5>
-                    <p>Ajuster le niveau du volume (0-100%)</p>
+                    <h5>Volume</h5>
+                    <p>Ajuster le volume des effets sonores</p>
                 </div>
             </div>
-            <div class="setting-control">
-                <input type="range" id="volumeSlider" class="volume-slider" min="0" max="100" value="50" oninput="updateVolume(this.value)">
-                <span class="volume-value" id="volumeValue">50%</span>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="dashboard-card" style="margin-top: 1.5rem;">
-    <div class="card-header">
-        <h3>Actions du Système</h3>
-    </div>
-    <div style="padding: 1.5rem;">
-        <div class="setting-item">
-            <div class="setting-info">
-                <div class="setting-icon setting-icon-save"></div>
-                <div>
-                    <h5>Sauvegarder les Paramètres</h5>
-                    <p>Enregistrer toutes les modifications</p>
-                </div>
-            </div>
-            <div class="setting-control">
-                <button class="btn-primary" onclick="saveSettings()">Sauvegarder</button>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <input type="range" id="volumeSlider" class="volume-slider" min="0" max="100" value="50"
+                    oninput="updateVolume(this.value)">
+                <span id="volumeValue" class="volume-value">50%</span>
             </div>
         </div>
 
@@ -87,210 +80,111 @@
 
         <div class="setting-item">
             <div class="setting-info">
-                <div class="setting-icon setting-icon-reset"></div>
+                <div class="setting-icon setting-icon-notifications"></div>
                 <div>
-                    <h5>Réinitialiser les Paramètres</h5>
-                    <p>Restaurer les paramètres par défaut</p>
+                    <h5>Notifications de bureau</h5>
+                    <p>Recevoir des notifications système</p>
                 </div>
             </div>
-            <div class="setting-control">
-                <button class="btn-secondary" onclick="resetSettings()">Réinitialiser</button>
-            </div>
+            <label class="toggle-switch">
+                <input type="checkbox" id="notificationsToggle" onchange="toggleNotifications(this.checked)" checked>
+                <span class="toggle-slider"></span>
+            </label>
         </div>
     </div>
+
+    <!-- Data & Privacy Section -->
+    <div class="dashboard-card">
+        <div class="card-header">
+            <h3>🔒 Données et Confidentialité</h3>
+        </div>
+
+        <div class="setting-item">
+            <div class="setting-info">
+                <div class="setting-icon setting-icon-autosave"></div>
+                <div>
+                    <h5>Sauvegarde automatique</h5>
+                    <p>Enregistrer automatiquement les modifications</p>
+                </div>
+            </div>
+            <label class="toggle-switch">
+                <input type="checkbox" id="autosaveToggle" onchange="toggleAutosave(this.checked)" checked>
+                <span class="toggle-slider"></span>
+            </label>
+        </div>
+
+        <div class="setting-divider"></div>
+
+        <div class="setting-item">
+            <div class="setting-info">
+                <div class="setting-icon setting-icon-cache"></div>
+                <div>
+                    <h5>Vider le cache</h5>
+                    <p>Supprimer les données temporaires</p>
+                </div>
+            </div>
+            <button class="btn-secondary" onclick="clearCache()">Vider</button>
+        </div>
+
+        <div class="setting-divider"></div>
+
+        <div class="setting-item">
+            <div class="setting-info">
+                <div class="setting-icon setting-icon-export"></div>
+                <div>
+                    <h5>Exporter les données</h5>
+                    <p>Télécharger une copie de vos données</p>
+                </div>
+            </div>
+            <button class="btn-secondary" onclick="exportData()">Exporter</button>
+        </div>
+    </div>
+
+    <!-- System Section -->
+    <div class="dashboard-card">
+        <div class="card-header">
+            <h3>⚙️ Système</h3>
+        </div>
+
+        <div class="setting-item">
+            <div class="setting-info">
+                <div class="setting-icon setting-icon-updates"></div>
+                <div>
+                    <h5>Mises à jour automatiques</h5>
+                    <p>Installer automatiquement les nouvelles versions</p>
+                </div>
+            </div>
+            <label class="toggle-switch">
+                <input type="checkbox" id="updatesToggle" onchange="toggleAutoUpdates(this.checked)" checked>
+                <span class="toggle-slider"></span>
+            </label>
+        </div>
+
+        <div class="setting-divider"></div>
+
+        <div class="setting-item">
+            <div class="setting-info">
+                <div class="setting-icon setting-icon-version"></div>
+                <div>
+                    <h5>Version de l'application</h5>
+                    <p>Bureau de Contrôle v1.0.0</p>
+                </div>
+            </div>
+            <button class="btn-secondary" onclick="checkUpdates()">Vérifier</button>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="settings-actions">
+        <button class="btn-primary" onclick="saveSettings()">
+            <span class="setting-icon setting-icon-save"
+                style="width: 20px; height: 20px; background-size: 16px; margin-right: 0.5rem;"></span>
+            Sauvegarder les paramètres
+        </button>
+        <button class="btn-danger" onclick="resetSettings()">
+            <span class="setting-icon setting-icon-reset"
+                style="width: 20px; height: 20px; background-size: 16px; margin-right: 0.5rem;"></span>
+            Réinitialiser
+        </button>
+    </div>
 </div>
-
-<style>
-.setting-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.5rem 0;
-}
-
-.setting-info {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex: 1;
-}
-
-.setting-icon {
-    width: 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #f5f5f5, #e8e8e8);
-    border-radius: 12px;
-    background-size: 24px;
-    background-repeat: no-repeat;
-    background-position: center;
-    flex-shrink: 0;
-}
-
-[data-theme="dark"] .setting-icon {
-    background: linear-gradient(135deg, #3a3a3a, #2d2d2d);
-}
-
-.setting-icon-theme {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23666"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg>');
-    background-color: #f0f0f0;
-}
-
-.setting-icon-sound {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23666"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>');
-    background-color: #f0f0f0;
-}
-
-.setting-icon-volume {
-.setting-select {
-    padding: 0.5rem 1rem;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    background: var(--bg-card);
-    color: var(--text-primary);
-    font-size: 0.875rem;
-    cursor: pointer;
-    min-width: 150px;
-}
-.setting-icon-reset {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23666"><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg>');
-    background-color: #f0f0f0;
-}
-
-.setting-info h5 {
-    margin: 0 0 0.25rem 0;
-    color: var(--text-primary);
-    font-size: 1rem;
-}
-
-.setting-info p {
-    margin: 0;
-    color: var(--text-secondary);
-    font-size: 0.875rem;
-}
-
-.setting-control {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.setting-select {
-    padding: 0.5rem 1rem;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    background: white;
-    font-size: 0.875rem;
-    cursor: pointer;
-    min-width: 150px;
-}
-
-.toggle-switch {
-    position: relative;
-    display: inline-block;
-    width: 50px;
-    height: 26px;
-    margin: 0;
-}
-
-.toggle-switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.toggle-slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: 0.3s;
-    border-radius: 26px;
-}
-
-.toggle-slider:before {
-    position: absolute;
-    content: "";
-    height: 20px;
-    width: 20px;
-    left: 3px;
-    bottom: 3px;
-    background-color: white;
-    transition: 0.3s;
-    border-radius: 50%;
-}
-
-.toggle-switch input:checked + .toggle-slider {
-    background-color: #c8102e;
-}
-
-.toggle-switch input:checked + .toggle-slider:before {
-    transform: translateX(24px);
-}
-.toggle-label {
-    font-size: 0.875rem;
-    color: var(--text-secondary);
-    font-weight: 500;
-}
-
-.volume-slider {
-    width: 150px;
-    height: 6px;
-    border-radius: 3px;
-    background: var(--border-color);
-    outline: none;
-    -webkit-appearance: none;
-}   -webkit-appearance: none;
-}
-
-.volume-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: #c8102e;
-    cursor: pointer;
-}
-
-.volume-slider::-moz-range-thumb {
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: #c8102e;
-    cursor: pointer;
-    border: none;
-}
-.volume-value {
-    font-size: 0.875rem;
-    color: var(--text-secondary);
-    font-weight: 500;
-    min-width: 45px;
-}
-
-.setting-divider {
-    height: 1px;
-    background: var(--border-color);
-}   background: #eee;
-}
-
-.btn-secondary {
-    padding: 0.5rem 1.5rem;
-    background: #6c757d;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.875rem;
-    transition: background 0.3s;
-}
-
-.btn-secondary:hover {
-    background: #5a6268;
-}
-</style>

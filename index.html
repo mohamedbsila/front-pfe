@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; img-src 'self' data:;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.socket.io; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; img-src 'self' data:; connect-src 'self' http://localhost:3000 ws://localhost:3000 https://cdn.jsdelivr.net https://cdn.socket.io https://api.ipify.org;">
     <title>Ministère de l'Agriculture - Espace Employés</title>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -39,9 +39,65 @@
     </div>
 
     <!-- Scripts -->
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.5.25/dist/jspdf.plugin.autotable.min.js"></script>
+    <script src="auth-client.js"></script>
+    <script src="api-client.js"></script>
+    <script src="production-client.js"></script>
+    <script src="users.js"></script>
     <script src="sounds.js"></script>
     <script src="app.js"></script>
     <script>
+        // Global WebSocket Manager
+        let socket = null;
+
+        function initWebSockets() {
+            if (socket) return;
+            
+            const token = localStorage.getItem('access_token');
+            if (!token) return;
+
+            socket = io('http://localhost:3000', {
+                auth: { token }
+            });
+
+            socket.on('connect', () => {
+                console.log('Connected to WebSocket server');
+            });
+
+            socket.on('user_changed', (data) => {
+                console.log('Real-time update received:', data);
+                const currentPage = localStorage.getItem('lastPage');
+                
+                if (currentPage === 'users' && typeof loadUsers === 'function') {
+                    loadUsers(true); // Silent refresh
+                } else if (currentPage === 'dashboard' && typeof initDashboard === 'function') {
+                    initDashboard(true);
+                }
+            });
+
+            socket.on('user_status_changed', (data) => {
+                console.log('User status changed:', data);
+                const currentPage = localStorage.getItem('lastPage');
+                if (currentPage === 'users' && typeof loadUsers === 'function') {
+                    loadUsers(true); // Refresh user list to update online indicators
+                }
+            });
+
+            socket.on('disconnect', () => {
+                console.log('Disconnected from WebSocket server');
+            });
+        }
+
+        function closeWebSockets() {
+            if (socket) {
+                socket.disconnect();
+                socket = null;
+            }
+        }
+
         // Load initial components on page load
         async function loadComponent(url, containerId) {
             try {
@@ -55,15 +111,30 @@
 
         // Initialize the app
         async function initApp() {
-            // Load login page
-            await loadComponent('pages/login.html', 'loginPage');
+            // Check if authenticated
+            const isAuthenticated = authClient.isAuthenticated();
             
-            // Load static components (sidebar and topbar)
-            await loadComponent('pages/sidebar.html', 'sidebarContainer');
-            await loadComponent('pages/topbar.html', 'topbarContainer');
-            
-            // Load default dashboard page
-            await loadPage('dashboard');
+            if (isAuthenticated) {
+                // Hide login page, show app
+                document.getElementById('loginPage').style.display = 'none';
+                document.querySelector('.app-container').style.display = 'flex';
+                
+                // Load components
+                await loadComponent('pages/sidebar.html', 'sidebarContainer');
+                await loadComponent('pages/topbar.html', 'topbarContainer');
+                
+                // Restore last visited page or default to dashboard
+                const lastPage = localStorage.getItem('lastPage') || 'dashboard';
+                await loadPage(lastPage);
+
+                // Start WebSockets after login
+                initWebSockets();
+            } else {
+                // Show login page
+                await loadComponent('pages/login.html', 'loginPage');
+                document.getElementById('loginPage').style.display = 'block';
+                document.querySelector('.app-container').style.display = 'none';
+            }
             
             // Initialize settings after DOM is ready
             if (typeof initSettings === 'function') {
@@ -74,6 +145,9 @@
         // Load dynamic page content
         async function loadPage(pageName) {
             try {
+                // Save current page to localStorage for persistence
+                localStorage.setItem('lastPage', pageName);
+
                 const response = await fetch(`pages/${pageName}.html`);
                 const html = await response.text();
                 document.getElementById('contentArea').innerHTML = html;
@@ -97,7 +171,9 @@
                     'reports': 'Rapports et Statistiques',
                     'resources': 'Ressources',
                     'users': 'Gestion des Utilisateurs',
-                    'settings': 'Paramètres Système'
+                    'settings': 'Paramètres Système',
+                    'production': 'Saisie Production Laitière',
+                    'production-reports': 'Rapports Production Laitière'
                 };
                 
                 const pageTitle = document.getElementById('page-title');
@@ -120,6 +196,26 @@
                     initSettings();
                 }
                 
+                // Initialize users page if on users page
+                if (pageName === 'users' && typeof initUsersPage === 'function') {
+                    initUsersPage();
+                }
+                
+                // Initialize dashboard if on dashboard
+                if (pageName === 'dashboard' && typeof initDashboard === 'function') {
+                    initDashboard();
+                }
+
+                // Initialize Production Page
+                if (pageName === 'production' && typeof initProductionPage === 'function') {
+                    initProductionPage();
+                }
+
+                // Initialize Production Reports Page
+                if (pageName === 'production-reports' && typeof initProductionReportsPage === 'function') {
+                    initProductionReportsPage();
+                }
+                
             } catch (error) {
                 console.error(`Error loading page ${pageName}:`, error);
                 document.getElementById('contentArea').innerHTML = `
@@ -132,7 +228,10 @@
         }
 
         // Initialize when DOM is ready
-        document.addEventListener('DOMContentLoaded', initApp);
+        document.addEventListener('DOMContentLoaded', () => {
+            initApp();
+            window.initApp = initApp; // Expose to global scope for app.js
+        });
     </script>
 </body>
 </html>

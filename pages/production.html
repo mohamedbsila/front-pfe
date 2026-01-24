@@ -1,0 +1,196 @@
+<div class="page-header">
+    <div class="header-title">
+        <h1>Saisie de la Production Laitière</h1>
+        <p class="breadcrumb">Gestion > Saisie Quotidienne</p>
+    </div>
+</div>
+
+<style>
+    /* Specific Styles for Production Page */
+    .production-card {
+        background: var(--bg-card);
+        border-radius: 16px;
+        box-shadow: 0 10px 30px var(--shadow);
+        padding: 2.5rem;
+        max-width: 900px;
+        margin: 0 auto;
+        border: 1px solid var(--border-color);
+    }
+    
+    .production-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    .form-section-title {
+        grid-column: 1 / -1;
+        font-size: 1.1rem;
+        color: #c8102e;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        border-bottom: 2px solid #f0f0f0;
+        padding-bottom: 0.8rem;
+        margin-top: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .form-section-title:first-of-type {
+        margin-top: 0;
+    }
+
+    /* Icon placeholders for titles */
+    .form-section-title::before {
+        content: '';
+        display: inline-block;
+        width: 6px;
+        height: 18px;
+        background: #c8102e;
+        border-radius: 4px;
+    }
+
+    .input-readonly {
+        background-color: #f8f9fa;
+        color: #495057;
+        cursor: not-allowed;
+        border-color: #dee2e6;
+        font-weight: 500;
+    }
+    
+    .btn-submit {
+        background: linear-gradient(135deg, #c8102e, #a00d25);
+        color: white;
+        padding: 1.2rem;
+        font-size: 1.1rem;
+        font-weight: bold;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+        width: 100%;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        box-shadow: 0 4px 6px rgba(200, 16, 46, 0.2);
+    }
+    
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 15px rgba(200, 16, 46, 0.3);
+    }
+
+    .btn-submit:active {
+        transform: translateY(0);
+    }
+
+    label {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        display: block;
+        color: #333;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .production-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="content-section active">
+    <div class="production-card">
+        <h2 style="margin-bottom: 2rem; text-align: center; color: #1a1a1a; font-size: 1.8rem;">
+            Fiche Journalière
+        </h2>
+        
+        <form id="productionForm" class="production-grid">
+            
+            <div class="form-section-title">Informations Générales</div>
+
+            <div class="form-group">
+                <label for="date">Date (Aujourd'hui)</label>
+                <!-- Using type="date" but will populate with JS. Browser renders consistent format. -->
+                <input type="date" id="date" class="form-input input-readonly" required readonly>
+            </div>
+            
+            <div class="form-group">
+                <label for="region">Daira (Région)</label>
+                <select id="region" class="form-input" required>
+                    <option value="" disabled selected>Choisir...</option>
+                    <option value="Béja">Béja</option>
+                    <option value="Jendouba">Jendouba</option>
+                    <option value="Kef">Kef</option>
+                </select>
+            </div>
+
+            <div class="form-group" style="grid-column: 1 / -1;">
+                <label for="unit">Unité de Production</label>
+                <select id="unit" class="form-input" required>
+                    <option value="" disabled selected>Choisir...</option>
+                    <option value="El-Mattline">El-Mattline</option>
+                    <option value="El-Gnadil">El-Gnadil</option>
+                    <option value="Essamen">Essamen</option>
+                </select>
+            </div>
+
+            <div class="form-section-title">Cheptel (Nombre de Vaches)</div>
+
+            <div class="form-group">
+                <label for="presentCows">Vaches Présentes (Hadira)</label>
+                <input type="number" id="presentCows" class="form-input" min="0" placeholder="0" required>
+            </div>
+
+            <div class="form-group">
+                <label for="milkingCows">Vaches Traites (Halia)</label>
+                <input type="number" id="milkingCows" class="form-input" min="0" placeholder="0" required>
+            </div>
+
+            <div class="form-section-title">Production et Vente</div>
+
+            <div class="form-group">
+                <label for="productionLiters">Production Totale (Litres)</label>
+                <input type="number" id="productionLiters" class="form-input" min="0" step="0.1" placeholder="0.00" required>
+            </div>
+
+            <div class="form-group">
+                <label for="soldLiters">Quantité Vendue (Litres)</label>
+                <input type="number" id="soldLiters" class="form-input" min="0" step="0.1" placeholder="0.00" required>
+            </div>
+
+            <div class="form-group">
+                <label for="wastedLiters">Lait Perdu (Litres)</label>
+                <input type="number" id="wastedLiters" class="form-input" min="0" step="0.1" placeholder="0.00">
+            </div>
+
+            <div class="form-group">
+                <label for="buyer">Acheteur</label>
+                <input type="text" id="buyer" class="form-input" placeholder="Ex: Sté fromagère italienne">
+            </div>
+
+            <div class="form-section-title">Consommation Interne</div>
+
+            <div class="form-group">
+                <label for="calfConsumption">Consommation Veaux (Litres)</label>
+                <input type="number" id="calfConsumption" class="form-input" min="0" step="0.1" placeholder="0.00">
+            </div>
+
+            <div class="form-group">
+                <label for="lambConsumption">Consommation Agneaux (Litres)</label>
+                <input type="number" id="lambConsumption" class="form-input" min="0" step="0.1" placeholder="0.00">
+            </div>
+
+            <!-- Price hidden or read-only if fixed? Keeping editable as per original plan, but can be optional -->
+            <div class="form-group" style="grid-column: 1 / -1;">
+                <label for="pricePerLiter">Prix Unitaire (Dt)</label>
+                <input type="number" id="pricePerLiter" class="form-input" min="0" step="0.001" value="4.400">
+            </div>
+
+            <div class="form-actions" style="grid-column: 1 / -1; margin-top: 2rem;">
+                <button type="submit" class="btn-submit">Valider l'Enregistrement</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Scripts removed and moved to production-client.js -->
