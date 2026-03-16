@@ -1,0 +1,116 @@
+<div class="labor-details-container">
+    <div class="charts-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+        <!-- Maintenance Trend Chart -->
+        <div class="chart-card">
+            <div class="chart-header">
+                <span class="chart-title">Évolution des Coûts de Maintenance</span>
+                <span style="font-size: 0.8rem; color: #6c757d; font-weight: 600;">DT / ANNÉE</span>
+            </div>
+            <div style="height: 250px; position: relative;">
+                <canvas id="workshopTrendChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Machine Distribution Chart -->
+        <div class="chart-card">
+            <div class="chart-header">
+                <span class="chart-title">Répartition du Parc</span>
+                <span style="font-size: 0.8rem; color: #6c757d; font-weight: 600;">% UNITÉS</span>
+            </div>
+            <div style="height: 250px; position: relative;">
+                <canvas id="workshopTypeChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary Highlights -->
+    <div class="labor-summary-grid">
+        <div class="summary-stat-card">
+            <span class="stat-label">Total Heures</span>
+            <span id="stat-workshop-hours" class="stat-value">0</span>
+        </div>
+        <div class="summary-stat-card">
+            <span class="stat-label">Coût Global</span>
+            <span id="stat-workshop-cost" class="stat-value" style="color: #000;">0 DT</span>
+        </div>
+        <div class="summary-stat-card">
+            <span class="stat-label">Maintenance / Pièces</span>
+            <span id="stat-workshop-maint" class="stat-value">0 DT</span>
+        </div>
+    </div>
+
+
+
+    <!-- Main Workshop Table -->
+    <div class="formal-table-card">
+        <table class="formal-table">
+            <thead>
+                <tr>
+                    <th rowspan="2" style="text-align: center;">آلات</th>
+                    <th colspan="2" style="text-align: center;">ساعات العمل</th>
+                    <th colspan="2" style="text-align: center;">محروقات</th>
+                    <th rowspan="2" style="text-align: center;">زيوت (د)</th>
+                    <th rowspan="2" style="text-align: center;">قطع غيار (د)</th>
+                    <th rowspan="2" style="text-align: center;">يد عاملة خارجية (د)</th>
+                    <th rowspan="2" style="text-align: center;">ورشة (د)</th>
+                    <th rowspan="2" style="text-align: center;">تأمين (د)</th>
+                    <th rowspan="2" style="text-align: center;">تآكل (د)</th>
+                    <th colspan="2" style="text-align: center;">أيام عمل السائق</th>
+                    <th rowspan="2" style="text-align: center;">جملة التكاليف (د)</th>
+                </tr>
+                <tr>
+                    <th style="text-align: center;">(س)</th>
+                    <th style="text-align: center;">قيمة (د)</th>
+                    <th style="text-align: center;">كمية</th>
+                    <th style="text-align: center;">قيمة (د)</th>
+                    <th style="text-align: center;">أيام</th>
+                    <th style="text-align: center;">قيمة (د)</th>
+                </tr>
+            </thead>
+            <tbody id="workshopTableBody">
+                <!-- Data will be injected here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Circular Performance Stats -->
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 30px;">
+        <div class="chart-card" style="padding: 20px; text-align: center;">
+            <div style="font-size: 0.85rem; font-weight: 700; color: #6c757d; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 0.5px;">Taux de Disponibilité</div>
+            <div style="height: 140px; position: relative;">
+                <canvas id="availabilityCircle"></canvas>
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.5rem; font-weight: 800; color: #1a1a1a;">85%</div>
+            </div>
+        </div>
+        <div class="chart-card" style="padding: 20px; text-align: center;">
+            <div style="font-size: 0.85rem; font-weight: 700; color: #6c757d; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 0.5px;">Indice de Performance</div>
+            <div style="height: 140px; position: relative;">
+                <canvas id="performanceCircle"></canvas>
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.5rem; font-weight: 800; color: #1a1a1a;">92%</div>
+            </div>
+        </div>
+        <div class="chart-card" style="padding: 20px; text-align: center;">
+            <div style="font-size: 0.85rem; font-weight: 700; color: #6c757d; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 0.5px;">Efficacité Maintenance</div>
+            <div style="height: 140px; position: relative;">
+                <canvas id="efficiencyCircle"></canvas>
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.5rem; font-weight: 800; color: #1a1a1a;">78%</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Statistical Costs (Requested from Image) -->
+    <div class="labor-summary-grid" style="margin-top: 40px;">
+        <div class="summary-stat-card" style="background: #fdf2f2; border-color: #f5c6cb;">
+            <span class="stat-label">كلفة ساعة الجرار</span>
+            <span id="tractor-hour-cost" class="stat-value">27,700</span>
+        </div>
+        <div class="summary-stat-card" style="background: #fffbe6; border-color: #ffe58f;">
+            <span class="stat-label">كلفة ساعة الميكنة</span>
+            <span id="attachment-hour-cost" class="stat-value">33,202</span>
+        </div>
+        <div class="summary-stat-card" style="background: #f8f9fa; border-color: #dee2e6;">
+            <span class="stat-label">كلفة ساعة الآلة الحاصدة</span>
+            <span id="harvester-hour-cost" class="stat-value">64,589</span>
+        </div>
+    </div>
+</div>

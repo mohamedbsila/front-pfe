@@ -3,9 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.socket.io; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; img-src 'self' data:; connect-src 'self' http://localhost:3000 ws://localhost:3000 https://cdn.jsdelivr.net https://cdn.socket.io https://api.ipify.org;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.socket.io; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; img-src 'self' data: https: http://localhost:3000; connect-src 'self' http://localhost:3000 ws://localhost:3000 https://cdn.jsdelivr.net https://cdn.socket.io https://api.ipify.org;">
     <title>Ministère de l'Agriculture - Espace Employés</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style/mutuelle.css">
+    <!-- External Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.447.0/dist/umd/lucide.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
 </head>
 <body>
     <!-- Login Container (loaded from pages/login.html) -->
@@ -45,7 +50,10 @@
     <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.5.25/dist/jspdf.plugin.autotable.min.js"></script>
     <script src="auth-client.js"></script>
     <script src="api-client.js"></script>
-    <script src="production-client.js"></script>
+    <script src="mutuelle-client.js"></script>
+    <script src="mutuelle.js"></script>
+    <script src="js/mutuelle/workshop.js"></script>
+    <script src="js/mutuelle/fodder.js"></script>
     <script src="users.js"></script>
     <script src="sounds.js"></script>
     <script src="app.js"></script>
@@ -164,16 +172,12 @@
                 // Update page title and breadcrumb
                 const titles = {
                     'dashboard': 'Tableau de Bord',
-                    'farmers': 'Gestion des Agriculteurs',
-                    'subsidies': 'Gestion des Subventions',
-                    'permits': 'Permis & Autorisations',
+                    'mutuelle/mutuelle': 'Gestion des Mutuelles',
                     'programs': 'Programmes Agricoles',
                     'reports': 'Rapports et Statistiques',
                     'resources': 'Ressources',
                     'users': 'Gestion des Utilisateurs',
-                    'settings': 'Paramètres Système',
-                    'production': 'Saisie Production Laitière',
-                    'production-reports': 'Rapports Production Laitière'
+                    'settings': 'Paramètres Système'
                 };
                 
                 const pageTitle = document.getElementById('page-title');
@@ -200,20 +204,15 @@
                 if (pageName === 'users' && typeof initUsersPage === 'function') {
                     initUsersPage();
                 }
+
+                // Initialize mutuelle page if on mutuelle page
+                if (pageName === 'mutuelle/mutuelle' && typeof initMutuellePage === 'function') {
+                    initMutuellePage();
+                }
                 
                 // Initialize dashboard if on dashboard
                 if (pageName === 'dashboard' && typeof initDashboard === 'function') {
                     initDashboard();
-                }
-
-                // Initialize Production Page
-                if (pageName === 'production' && typeof initProductionPage === 'function') {
-                    initProductionPage();
-                }
-
-                // Initialize Production Reports Page
-                if (pageName === 'production-reports' && typeof initProductionReportsPage === 'function') {
-                    initProductionReportsPage();
                 }
                 
             } catch (error) {

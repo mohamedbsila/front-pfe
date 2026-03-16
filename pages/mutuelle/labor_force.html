@@ -1,0 +1,97 @@
+<div class="labor-details-container">
+    <!-- Charts Row 1 -->
+    <div class="charts-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+        <!-- Curve Display / Trend Chart -->
+        <div class="chart-card">
+            <div class="chart-header">
+                <span class="chart-title">Évolution de la Masse Salariale</span>
+                <span style="font-size: 0.8rem; color: #6c757d; font-weight: 600;">DT / ANNÉE</span>
+            </div>
+            <div style="height: 250px; position: relative;">
+                <canvas id="laborTrendChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Category Distribution / Doughnut Chart -->
+        <div class="chart-card">
+            <div class="chart-header">
+                <span class="chart-title">Répartition par Catégorie</span>
+                <span style="font-size: 0.8rem; color: #6c757d; font-weight: 600;">% EFFECTIF</span>
+            </div>
+            <div style="height: 250px; position: relative;">
+                <canvas id="laborCategoryChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary Highlights -->
+    <div class="labor-summary-grid">
+        <div class="summary-stat-card stat-days">
+            <span class="stat-label">Total Jours</span>
+            <span id="stat-total-days" class="stat-value">0</span>
+        </div>
+        <div class="summary-stat-card stat-salary">
+            <span class="stat-label">Masse Salariale</span>
+            <span id="stat-mass-salary" class="stat-value">0 DT</span>
+        </div>
+        <div class="summary-stat-card stat-social">
+            <span class="stat-label">Couverture Soc.</span>
+            <span id="stat-social-cover" class="stat-value">0 DT</span>
+        </div>
+    </div>
+
+    <!-- Detailed Metrics Table -->
+    <div class="formal-table-card">
+        <table class="formal-table">
+            <thead>
+                <tr>
+                    <th style="text-align: right;">الصنف (Catégorie)</th>
+                    <th>عدد أيام العمل</th>
+                    <th>راتب خام (DT)</th>
+                    <th>التغطية الاجتماعية</th>
+                    <th>الجملة (DT)</th>
+                    <th>معدل الأجرة اليومية</th>
+                </tr>
+            </thead>
+            <tbody id="laborTableBody">
+                <!-- Rows will be injected here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Advanced Analytics Sections (Down the table) -->
+    <div class="charts-row" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+        <!-- Budget Allocation -->
+        <div class="chart-card">
+            <div class="chart-header">
+                <span class="chart-title">Répartition du Budget</span>
+                <span style="font-size: 0.8rem; color: #6c757d; font-weight: 600;">% COÛT TOTAL</span>
+            </div>
+            <div style="height: 220px; position: relative;">
+                <canvas id="laborBudgetChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Wage Comparison -->
+        <div class="chart-card">
+            <div class="chart-header">
+                <span class="chart-title">Comparaison des Salaires</span>
+                <span style="font-size: 0.8rem; color: #6c757d; font-weight: 600;">DT / JOUR</span>
+            </div>
+            <div style="height: 220px; position: relative;">
+                <canvas id="laborWageChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Financial Composition -->
+        <div class="chart-card">
+            <div class="chart-header">
+                <span class="chart-title">Composition du Coût</span>
+                <span style="font-size: 0.8rem; color: #6c757d; font-weight: 600;">BRUT vs SOCIAL</span>
+            </div>
+            <div style="height: 220px; position: relative;">
+                <canvas id="laborCompositionChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,65 @@
+<div id="subSelectionContainer"
+    style="background: #fff; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.08); border: 1px solid #eee; margin: 20px 0; width: 100%;">
+    <div class="sub-selection-header">
+        <div class="header-title-group" style="display: flex; align-items: center; gap: 15px;">
+            <img id="selectedMutuelleLogo" src="" alt="Logo"
+                style="width: 50px; height: 50px; border-radius: 10px; object-fit: cover; display: none; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+            <div>
+                <span class="header-sub-title">Gestion de Mutuelle</span>
+                <h4 id="selectedMutuelleName" class="header-main-title"></h4>
+            </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+            <!-- Search Bar -->
+            <div id="actionSearchGroup" class="search-input-group" style="position: relative;">
+                <input type="text" id="actionSearchInput" placeholder="Rechercher une action..."
+                    oninput="handleActionSearch(this.value)"
+                    style="padding: 8px 15px 8px 40px; border-radius: 12px; border: 1px solid #e9ecef; background: #f8f9fa; font-size: 0.9rem; width: 250px; outline: none; transition: all 0.3s ease;">
+                <i data-lucide="search"
+                    style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: #adb5bd;"></i>
+                <kbd id="searchKbd">Ctrl K</kbd>
+                <div id="searchSuggestion" class="search-suggestion-hint"></div>
+            </div>
+
+            <div id="laborYearSelector" style="display: none; align-items: center; gap: 8px;">
+                <div style="position: relative; display: flex; align-items: center;">
+                    <div id="laborYearButtons"
+                        style="display: flex; background: #f1f3f5; padding: 4px; border-radius: 12px; gap: 4px; max-width: 320px; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none;">
+                        <!-- Buttons will be injected here by mutuelle.js -->
+                    </div>
+                    <div style="position: absolute; right: 0; top: 0; bottom: 0; width: 30px; background: linear-gradient(to right, transparent, #f1f3f5); pointer-events: none; border-radius: 0 12px 12px 0;"></div>
+                </div>
+            </div>
+
+            <button id="addLaborDataBtn" class="btn-back-formal"
+                style="display: none; background: #c41a14; color: #fff; border: none;" onclick="showAddLaborModal()">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                <span>Ajouter Données</span>
+            </button>
+
+            <button class="btn-back-formal" onclick="goBackToGrid()">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <line x1="19" y1="12" x2="5" y2="12" />
+                    <polyline points="12 19 5 12 12 5" />
+                </svg>
+                <span>Quitter la vue</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="sub-selection-layout">
+        <div id="dashboardSidebar" class="dashboard-sidebar">
+            <!-- Sidebar categories will be injected here -->
+        </div>
+        <div id="selectionGrid" class="dashboard-content action-card-grid">
+            <!-- Action cards will be injected here -->
+        </div>
+        <div id="laborForceContainer" class="dashboard-content" style="display: none;">
+            <!-- Labor Force Table will be injected here -->
+        </div>
+    </div>
+</div>

@@ -151,16 +151,12 @@ function showSection(sectionId) {
     // Update page title and breadcrumb
     const titles = {
         'dashboard': 'Tableau de Bord',
-        'farmers': 'Gestion des Agriculteurs',
-        'subsidies': 'Gestion des Subventions',
-        'permits': 'Permis & Autorisations',
+        'mutuelle': 'Gestion des Mutuelles',
         'programs': 'Programmes Agricoles',
         'reports': 'Rapports et Statistiques',
         'resources': 'Ressources',
         'users': 'Gestion des Utilisateurs',
-        'settings': 'Paramètres Système',
-        'production': 'Saisie Production Laitière',
-        'production-reports': 'Rapports Production Laitière'
+        'settings': 'Paramètres Système'
     };
 
     const pageTitle = document.getElementById('page-title');
@@ -277,6 +273,57 @@ function showCustomConfirm(message, onConfirm) {
         console.log('Sound error:', e);
     }
 }
+
+/**
+ * Custom Prompt Modal for Electron compatibility
+ * @param {string} message - The prompt message
+ * @param {string} placeholder - Input placeholder
+ * @param {function} onComplete - Callback with input value
+ */
+function showCustomPrompt(message, placeholder, onComplete) {
+    const modal = document.getElementById('customModal');
+    const icon = document.getElementById('modalIcon');
+    const title = document.getElementById('modalTitle');
+    const messageEl = document.getElementById('modalMessage');
+    const buttons = document.getElementById('modalButtons');
+
+    icon.innerHTML = '<svg viewBox="0 0 24 24" width="24" height="24" fill="white"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-1 14H6v-2h12v2zm0-4H6v-2h12v2zm0-4H6V7h12v2z"/></svg>';
+    icon.style.background = '#2c3e50';
+    title.textContent = 'Saisie Requise';
+    
+    messageEl.innerHTML = `
+        <div style="margin-bottom: 1rem;">${message}</div>
+        <input type="text" id="promptInput" class="form-input" placeholder="${placeholder}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+    `;
+
+    buttons.innerHTML = `
+        <button class="modal-btn modal-btn-secondary" onclick="closeCustomModal()">Annuler</button>
+        <button class="modal-btn modal-btn-primary" onclick="submitPrompt()">Valider</button>
+    `;
+
+    modal.classList.add('show');
+    
+    // Focus input
+    setTimeout(() => {
+        const input = document.getElementById('promptInput');
+        if (input) input.focus();
+    }, 100);
+
+    window._promptCallback = onComplete;
+}
+
+function submitPrompt() {
+    const input = document.getElementById('promptInput');
+    const value = input ? input.value : '';
+    if (typeof window._promptCallback === 'function') {
+        window._promptCallback(value);
+        window._promptCallback = null;
+    }
+    closeCustomModal();
+}
+
+window.submitPrompt = submitPrompt;
+window.showCustomPrompt = showCustomPrompt;
 
 // Confirm action
 function confirmAction() {

@@ -1,0 +1,14 @@
+<div class="mutuelle-list-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding: 0 1rem;">
+    <h2 style="margin: 0; font-size: 1.5rem; font-weight: 700; color: #333;">Liste des Mutuelles</h2>
+    <button class="btn-primary" onclick="showAddMutuelleModal()" style="display: flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 8px; font-weight: 600;">
+        <i data-lucide="plus-circle" style="width: 20px; height: 20px;"></i>
+        <span>+ Ajouter Mutuelle</span>
+    </button>
+</div>
+
+<div id="mutuelleCardGrid" class="mutuelle-grid">
+    <div style="text-align: center; padding: 4rem; width: 100%; grid-column: 1 / -1;">
+        <div class="loader-spinner"></div>
+        <p style="margin-top: 1rem; color: #666;">Chargement des mutuelles...</p>
+    </div>
+</div>
