@@ -24,6 +24,10 @@
                 <span class="icon icon-resources"></span> <!-- Reusing resource icon for mutuelle -->
                 <span class="nav-text">Mutuelle</span>
             </a>
+            <a href="#" class="nav-item" onclick="loadPage('employees')">
+                <span class="icon icon-farmers"></span> 
+                <span class="nav-text">Employés</span>
+            </a>
         </div>
 
         <div class="nav-section">
@@ -57,10 +61,10 @@
 
     <div class="sidebar-footer">
         <div class="user-profile">
-            <div class="user-avatar">AH</div>
+            <div class="user-avatar" id="sidebarUserAvatar">--</div>
             <div class="user-info">
-                <p class="user-name">Ahmed Hammami</p>
-                <p class="user-role">Administrateur</p>
+                <p class="user-name" id="sidebarUserName">Chargement...</p>
+                <p class="user-role" id="sidebarUserRole">...</p>
             </div>
         </div>
         <button class="btn-logout" onclick="logout()">

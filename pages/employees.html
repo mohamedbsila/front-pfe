@@ -1,0 +1,32 @@
+<div class="section-header-bar">
+    <div class="header-left">
+        <h3>Gestion des Employés</h3>
+        <p class="subtitle">Visualisation et gestion du personnel par mutuelle</p>
+    </div>
+    <div class="header-right">
+        <select id="employeeMutuelleFilter" class="form-input" style="width: 250px; margin-right: 1rem;" onchange="window.onEmployeeMutuelleChange(this.value)">
+            <option value="">Sélectionner une Mutuelle</option>
+            <!-- Mutuelles will be injected here -->
+        </select>
+        <button id="addEmployeeBtn" class="btn-primary" onclick="window.showAddEmployeeModal()" style="display: none;">
+            <i data-lucide="plus"></i>
+            Ajouter un Employé
+        </button>
+    </div>
+</div>
+
+<div class="employees-content-container">
+    <div id="employeesTablePlaceholder" class="table-placeholder">
+        <div style="text-align: center; padding: 5rem; border: 2px dashed #eee; border-radius: 12px;">
+            <i data-lucide="info" style="width: 48px; height: 48px; color: #adb5bd; margin-bottom: 1rem;"></i>
+            <h4 style="color: #6c757d;">Sélectionnez une mutuelle pour voir ses employés</h4>
+        </div>
+    </div>
+    <div id="employeesTableContainer" class="employees-table-container" style="display: none;">
+        <!-- Employee table will be rendered here -->
+    </div>
+</div>
+
+<div id="attendanceGrid" class="attendance-grid-section" style="margin-top: 2rem;">
+    <!-- Attendance stats/grid could go here -->
+</div>

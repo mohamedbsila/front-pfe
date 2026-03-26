@@ -1,0 +1,323 @@
+<div class="plant-varieties-dashboard" id="plantVarietiesDashboard">
+    <div class="varieties-horizontal-scroll" id="varietiesCardsContainer">
+    </div>
+
+    <!-- Section 1: Top Statistics and Visualization -->
+    <div class="dashboard-section" style="margin-top: 20px;">
+        <div class="panel-card glass-panel">
+            <div class="panel-header">
+                <div class="panel-tabs">
+                    <button class="panel-tab active" data-tab="grouped">Vue Groupée</button>
+                    <button class="panel-tab" data-tab="variety">Vue par Variété</button>
+                </div>
+                <button class="btn-quit" onclick="window.backToPlants()">
+                    <i data-lucide="arrow-left"></i> Quitter la vue
+                </button>
+            </div>
+
+            <div class="stats-overview-row">
+                <div class="stat-item">
+                    <span class="stat-label">Surface Totale:</span>
+                    <span class="stat-value" id="totalSurfaceValue">0 Ha</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Production Totale:</span>
+                    <span class="stat-value" id="totalProductionValue">0 Tonnes</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Rendement Moyen:</span>
+                    <span class="stat-value" id="avgYieldValue">0 T/Ha</span>
+                </div>
+            </div>
+
+            <div class="charts-row-grid">
+                <div class="chart-container">
+                    <h5>Production Totale (par variété)</h5>
+                    <canvas id="productionAreaChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h5>Répartition Surface (%)</h5>
+                    <canvas id="surfaceDonutChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 2: Varieties Dashboard Table (Now in the middle) -->
+    <div class="dashboard-section" style="margin-top: 20px;">
+        <div class="panel-card glass-panel">
+            <div class="panel-header">
+                <h5>Tableau de Bord des Variétés</h5>
+            </div>
+            <div class="table-responsive">
+                <table class="formal-table">
+                    <thead>
+                        <tr>
+                            <th>Variété</th>
+                            <th>Surface (Ha)</th>
+                            <th>Rendement Prévu (T/Ha)</th>
+                            <th>Production Moyen Totale (T)</th>
+                            <th>Production Totale (T)</th>
+                            <th>Coût Moyen (DT/T)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="varietiesTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 3: Financial Summary (At the bottom) -->
+    <div class="financial-summary-section" style="margin-top: 20px;">
+        <div class="panel-card glass-panel">
+            <div class="panel-header">
+                <h5>Résumé Financier</h5>
+            </div>
+            <div class="charts-row-grid">
+                <div class="chart-container">
+                    <h5>Coûts de Production Par Ha</h5>
+                    <canvas id="productionCostsBarChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h5>Marge Bénéficiaire Potentielle</h5>
+                    <canvas id="profitMarginBarChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .plant-varieties-dashboard {
+        padding: 10px;
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    /* Grid Layout Fixes */
+    .dashboard-grid-layout {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr;
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .charts-row-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .financial-summary-section {
+        margin-top: 20px;
+    }
+
+    .varieties-horizontal-scroll {
+        display: flex;
+        overflow-x: auto;
+        gap: 15px;
+        padding-bottom: 15px;
+        scrollbar-width: thin;
+    }
+
+    .variety-summary-card {
+        min-width: 250px;
+        background: #fff;
+        border-radius: 12px;
+        padding: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        border: 1px solid #eee;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .variety-card-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .variety-card-title {
+        font-weight: 600;
+        font-size: 0.95rem;
+        color: #333;
+    }
+
+    .variety-card-main {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+    }
+
+    .variety-surface-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #222;
+    }
+
+    .sparkline-container {
+        height: 50px;
+        width: 120px;
+    }
+
+    .panel-card {
+        background: #fff;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    }
+
+    .panel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .panel-tabs {
+        display: flex;
+        gap: 10px;
+    }
+
+    .panel-tab {
+        padding: 8px 16px;
+        border: none;
+        background: #f1f3f5;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .panel-tab.active {
+        background: #c41a14;
+        color: #fff;
+    }
+
+    .btn-quit {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        background: #c41a14;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        color: #fff;
+        transition: all 0.2s ease;
+    }
+
+    .btn-quit:hover {
+        background: #a31510;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(196, 26, 20, 0.2);
+    }
+
+    .btn-quit svg {
+        width: 18px;
+        height: 18px;
+        stroke-width: 2.5;
+    }
+
+    .stat-item {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .stat-label {
+        font-size: 0.8rem;
+        color: #6c757d;
+    }
+
+    .stat-value {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #333;
+    }
+
+    .stats-overview-row {
+        display: flex;
+        gap: 40px;
+        background: #f8f9fa;
+        padding: 15px 25px;
+        border-radius: 12px;
+    }
+
+    .chart-container {
+        background: #fff;
+        padding: 10px;
+        height: 300px;
+        position: relative;
+        width: 100%;
+    }
+
+    .chart-container h5 {
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 20px;
+        color: #1a3a5f;
+        text-align: center;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .formal-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .formal-table th {
+        text-align: left;
+        padding: 12px;
+        font-size: 0.8rem;
+        color: #6c757d;
+        border-bottom: 2px solid #f1f3f5;
+    }
+
+    .formal-table td {
+        padding: 12px;
+        font-size: 0.85rem;
+        color: #444;
+        border-bottom: 1px solid #f1f3f5;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Responsive adjustments for card positions */
+    @media (max-width: 992px) {
+        .dashboard-grid-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .charts-row-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .stats-overview-row {
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .panel-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
+        }
+    }
+</style>

@@ -1,4 +1,4 @@
-<div class="plant-production-container">
+<div class="plant-production-container" id="plantProductionContainer">
     <div class="herd-menu-grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); max-width: 1200px;">
         <!-- Header Category -->
         <div class="formal-action-card active-card" style="grid-column: 1 / -1; margin-bottom: 20px;">
@@ -11,78 +11,9 @@
             </div>
         </div>
 
-        <!-- Crops List -->
-        <div class="formal-action-card" onclick="handleHerdAction('قمح صلب')">
-            <div class="action-card-icon"><i data-lucide="wheat"></i></div>
-            <div class="action-card-text"><div class="action-card-title">قمح صلب</div><div class="action-card-desc">Blé Dur</div></div>
-        </div>
-        <div class="formal-action-card" onclick="handleHerdAction('قمح لين')">
-            <div class="action-card-icon"><i data-lucide="wheat"></i></div>
-            <div class="action-card-text"><div class="action-card-title">قمح لين</div><div class="action-card-desc">Blé Tendre</div></div>
-        </div>
-        <div class="formal-action-card" onclick="handleHerdAction('قصيبة')">
-            <div class="action-card-icon"><i data-lucide="leaf"></i></div>
-            <div class="action-card-text"><div class="action-card-title">قصيبة</div><div class="action-card-desc">Avoine / Koussayba</div></div>
-        </div>
-        <div class="formal-action-card" onclick="handleHerdAction('تريتيكال')">
-            <div class="action-card-icon"><i data-lucide="leaf"></i></div>
-            <div class="action-card-text"><div class="action-card-title">تريتيكال</div><div class="action-card-desc">Triticale</div></div>
-        </div>
-        <div class="formal-action-card" onclick="handleHerdAction('شعير')">
-            <div class="action-card-icon"><i data-lucide="wheat"></i></div>
-            <div class="action-card-text"><div class="action-card-title">شعير</div><div class="action-card-desc">Orge</div></div>
-        </div>
-        <div class="formal-action-card" onclick="handleHerdAction('فول')">
-            <div class="action-card-icon"><i data-lucide="box"></i></div>
-            <div class="action-card-text"><div class="action-card-title">فول</div><div class="action-card-desc">Fèves</div></div>
-        </div>
-        <div class="formal-action-card" onclick="handleHerdAction('حمص')">
-            <div class="action-card-icon"><i data-lucide="box"></i></div>
-            <div class="action-card-text"><div class="action-card-title">حمص</div><div class="action-card-desc">Pois Chiches</div></div>
-        </div>
-        <div class="formal-action-card" onclick="handleHerdAction('قرطالة')">
-            <div class="action-card-icon"><i data-lucide="leaf"></i></div>
-            <div class="action-card-text"><div class="action-card-title">قرطالة</div><div class="action-card-desc">Vesce-Avoine / Kartala</div></div>
-        </div>
-        <div class="formal-action-card" onclick="handleHerdAction('حلية')">
-            <div class="action-card-icon"><i data-lucide="flower-2"></i></div>
-            <div class="action-card-text"><div class="action-card-title">حلية</div><div class="action-card-desc">Fenugrec / Hilya</div></div>
-        </div>
-        <div class="formal-action-card" onclick="handleHerdAction('سلة')">
-            <div class="action-card-icon"><i data-lucide="leaf"></i></div>
-            <div class="action-card-text"><div class="action-card-title">سلة</div><div class="action-card-desc">Sella</div></div>
-        </div>
-        <div class="formal-action-card" onclick="handleHerdAction('برسيم')">
-            <div class="action-card-icon"><i data-lucide="sprout"></i></div>
-            <div class="action-card-text"><div class="action-card-title">برسيم</div><div class="action-card-desc">Trèfle / Bersim</div></div>
-        </div>
-        <div class="formal-action-card" onclick="handleHerdAction('سلجم زيتي')">
-            <div class="action-card-icon"><i data-lucide="flower"></i></div>
-            <div class="action-card-text"><div class="action-card-title">سلجم زيتي</div><div class="action-card-desc">Colza</div></div>
-        </div>
-        <div class="formal-action-card" onclick="handleHerdAction('قصة')">
-            <div class="action-card-icon"><i data-lucide="package"></i></div>
-            <div class="action-card-text"><div class="action-card-title">قصة</div><div class="action-card-desc">Fourrage / Kossa</div></div>
-        </div>
-        <div class="formal-action-card" onclick="handleHerdAction('درع علقي')">
-            <div class="action-card-icon"><i data-lucide="leaf"></i></div>
-            <div class="action-card-text"><div class="action-card-title">درع علقي</div><div class="action-card-desc">Sorgho / Draa</div></div>
-        </div>
-        <div class="formal-action-card" onclick="handleHerdAction('أعلاف خشنة')">
-            <div class="action-card-icon"><i data-lucide="package-2"></i></div>
-            <div class="action-card-text"><div class="action-card-title">أعلاف خشنة</div><div class="action-card-desc">Fourrages Grossiers</div></div>
-        </div>
-        <div class="formal-action-card" onclick="handleHerdAction('كروم')">
-            <div class="action-card-icon"><i data-lucide="grape"></i></div>
-            <div class="action-card-text"><div class="action-card-title">كروم</div><div class="action-card-desc">Vignes</div></div>
-        </div>
-        <div class="formal-action-card" onclick="handleHerdAction('زيتون')">
-            <div class="action-card-icon"><i data-lucide="tree-pine"></i></div>
-            <div class="action-card-text"><div class="action-card-title">زيتون</div><div class="action-card-desc">Oliviers</div></div>
-        </div>
-        <div class="formal-action-card" onclick="handleHerdAction('زراعات سقوية')">
-            <div class="action-card-icon"><i data-lucide="droplets"></i></div>
-            <div class="action-card-text"><div class="action-card-title">زراعات سقوية</div><div class="action-card-desc">Cultures Irriguées</div></div>
+        <!-- Dynamic crop cards will be loaded here -->
+        <div id="plantCardsContainer" class="plant-cards-grid" style="grid-column: 1 / -1; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;">
+            <div class="loading-indicator">Loading plants...</div>
         </div>
     </div>
 </div>

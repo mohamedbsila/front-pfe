@@ -7,6 +7,7 @@
     <title>Ministère de l'Agriculture - Espace Employés</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="style/mutuelle.css">
+    <link rel="stylesheet" href="style/employees.css">
     <!-- External Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/lucide@0.447.0/dist/umd/lucide.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -48,188 +49,17 @@
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.5.25/dist/jspdf.plugin.autotable.min.js"></script>
-    <script src="auth-client.js"></script>
-    <script src="api-client.js"></script>
-    <script src="mutuelle-client.js"></script>
-    <script src="mutuelle.js"></script>
-    <script src="js/mutuelle/workshop.js"></script>
-    <script src="js/mutuelle/fodder.js"></script>
-    <script src="users.js"></script>
-    <script src="sounds.js"></script>
-    <script src="app.js"></script>
-    <script>
-        // Global WebSocket Manager
-        let socket = null;
-
-        function initWebSockets() {
-            if (socket) return;
-            
-            const token = localStorage.getItem('access_token');
-            if (!token) return;
-
-            socket = io('http://localhost:3000', {
-                auth: { token }
-            });
-
-            socket.on('connect', () => {
-                console.log('Connected to WebSocket server');
-            });
-
-            socket.on('user_changed', (data) => {
-                console.log('Real-time update received:', data);
-                const currentPage = localStorage.getItem('lastPage');
-                
-                if (currentPage === 'users' && typeof loadUsers === 'function') {
-                    loadUsers(true); // Silent refresh
-                } else if (currentPage === 'dashboard' && typeof initDashboard === 'function') {
-                    initDashboard(true);
-                }
-            });
-
-            socket.on('user_status_changed', (data) => {
-                console.log('User status changed:', data);
-                const currentPage = localStorage.getItem('lastPage');
-                if (currentPage === 'users' && typeof loadUsers === 'function') {
-                    loadUsers(true); // Refresh user list to update online indicators
-                }
-            });
-
-            socket.on('disconnect', () => {
-                console.log('Disconnected from WebSocket server');
-            });
-        }
-
-        function closeWebSockets() {
-            if (socket) {
-                socket.disconnect();
-                socket = null;
-            }
-        }
-
-        // Load initial components on page load
-        async function loadComponent(url, containerId) {
-            try {
-                const response = await fetch(url);
-                const html = await response.text();
-                document.getElementById(containerId).innerHTML = html;
-            } catch (error) {
-                console.error(`Error loading ${url}:`, error);
-            }
-        }
-
-        // Initialize the app
-        async function initApp() {
-            // Check if authenticated
-            const isAuthenticated = authClient.isAuthenticated();
-            
-            if (isAuthenticated) {
-                // Hide login page, show app
-                document.getElementById('loginPage').style.display = 'none';
-                document.querySelector('.app-container').style.display = 'flex';
-                
-                // Load components
-                await loadComponent('pages/sidebar.html', 'sidebarContainer');
-                await loadComponent('pages/topbar.html', 'topbarContainer');
-                
-                // Restore last visited page or default to dashboard
-                const lastPage = localStorage.getItem('lastPage') || 'dashboard';
-                await loadPage(lastPage);
-
-                // Start WebSockets after login
-                initWebSockets();
-            } else {
-                // Show login page
-                await loadComponent('pages/login.html', 'loginPage');
-                document.getElementById('loginPage').style.display = 'block';
-                document.querySelector('.app-container').style.display = 'none';
-            }
-            
-            // Initialize settings after DOM is ready
-            if (typeof initSettings === 'function') {
-                initSettings();
-            }
-        }
-
-        // Load dynamic page content
-        async function loadPage(pageName) {
-            try {
-                // Save current page to localStorage for persistence
-                localStorage.setItem('lastPage', pageName);
-
-                const response = await fetch(`pages/${pageName}.html`);
-                const html = await response.text();
-                document.getElementById('contentArea').innerHTML = html;
-                
-                // Update active nav item
-                document.querySelectorAll('.nav-item').forEach(item => {
-                    item.classList.remove('active');
-                });
-                const activeItem = document.querySelector(`[onclick*="loadPage('${pageName}')"]`);
-                if (activeItem) {
-                    activeItem.classList.add('active');
-                }
-                
-                // Update page title and breadcrumb
-                const titles = {
-                    'dashboard': 'Tableau de Bord',
-                    'mutuelle/mutuelle': 'Gestion des Mutuelles',
-                    'programs': 'Programmes Agricoles',
-                    'reports': 'Rapports et Statistiques',
-                    'resources': 'Ressources',
-                    'users': 'Gestion des Utilisateurs',
-                    'settings': 'Paramètres Système'
-                };
-                
-                const pageTitle = document.getElementById('page-title');
-                const breadcrumbCurrent = document.getElementById('breadcrumb-current');
-                
-                if (pageTitle) pageTitle.textContent = titles[pageName] || pageName;
-                if (breadcrumbCurrent) breadcrumbCurrent.textContent = titles[pageName] || pageName;
-                
-                // Play navigation sound
-                try {
-                    if (typeof playNavigationSound === 'function') {
-                        playNavigationSound();
-                    }
-                } catch(e) {
-                    console.log('Sound error:', e);
-                }
-                
-                // Reinitialize settings UI if on settings page
-                if (pageName === 'settings' && typeof initSettings === 'function') {
-                    initSettings();
-                }
-                
-                // Initialize users page if on users page
-                if (pageName === 'users' && typeof initUsersPage === 'function') {
-                    initUsersPage();
-                }
-
-                // Initialize mutuelle page if on mutuelle page
-                if (pageName === 'mutuelle/mutuelle' && typeof initMutuellePage === 'function') {
-                    initMutuellePage();
-                }
-                
-                // Initialize dashboard if on dashboard
-                if (pageName === 'dashboard' && typeof initDashboard === 'function') {
-                    initDashboard();
-                }
-                
-            } catch (error) {
-                console.error(`Error loading page ${pageName}:`, error);
-                document.getElementById('contentArea').innerHTML = `
-                    <div style="text-align: center; padding: 4rem;">
-                        <h3>Erreur de Chargement</h3>
-                        <p style="color: #666; margin-top: 1rem;">Impossible de charger la page: ${pageName}</p>
-                    </div>
-                `;
-            }
-        }
-
-        // Initialize when DOM is ready
-        document.addEventListener('DOMContentLoaded', () => {
-            initApp();
-            window.initApp = initApp; // Expose to global scope for app.js
+    
+    <!-- Sound Effects -->
+    <script src="src/shared/sounds.js"></script>
+    
+    <!-- Modular Architecture — single entry point -->
+    <script type="module">
+        import('./src/main.js').then(module => {
+            console.log('✅ Module loaded');
+        }).catch(err => {
+            console.error('❌ Module loading failed:', err);
+            document.body.innerHTML = '<div style="padding:2rem;"><h3>Erreur de chargement</h3><pre>'+err.message+'</pre></div>';
         });
     </script>
 </body>

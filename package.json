@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "electron .",
+    "dev": "electron . --dev",
     "test": "playwright test",
     "test:security": "playwright test tests/security",
     "test:ui": "playwright test tests/ui",

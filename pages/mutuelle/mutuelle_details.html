@@ -1,16 +1,15 @@
 <div id="subSelectionContainer"
     style="background: #fff; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.08); border: 1px solid #eee; margin: 20px 0; width: 100%;">
     <div class="sub-selection-header">
-        <div class="header-title-group" style="display: flex; align-items: center; gap: 15px;">
-            <img id="selectedMutuelleLogo" src="" alt="Logo"
-                style="width: 50px; height: 50px; border-radius: 10px; object-fit: cover; display: none; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+        <div class="header-title-group">
+            <img id="selectedMutuelleLogo" src="" alt="Logo" class="header-mutuelle-logo">
             <div>
                 <span class="header-sub-title">Gestion de Mutuelle</span>
                 <h4 id="selectedMutuelleName" class="header-main-title"></h4>
             </div>
         </div>
 
-        <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+        <div class="header-actions-group">
             <!-- Search Bar -->
             <div id="actionSearchGroup" class="search-input-group" style="position: relative;">
                 <input type="text" id="actionSearchInput" placeholder="Rechercher une action..."
@@ -41,7 +40,16 @@
                 <span>Ajouter Données</span>
             </button>
 
-            <button class="btn-back-formal" onclick="goBackToGrid()">
+            <button id="addPlantBtn" class="btn-back-formal"
+                style="display: none; background: #c41a14; color: #fff; border: none; align-items: center; gap: 8px;" onclick="window.showAddPlantModal()">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                <span>Ajouter نبات</span>
+            </button>
+
+            <button class="btn-back-formal" onclick="goBack()">
                 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5">
                     <line x1="19" y1="12" x2="5" y2="12" />
                     <polyline points="12 19 5 12 12 5" />

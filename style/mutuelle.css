@@ -179,35 +179,60 @@ td {
 
 .sub-selection-header {
     background: #fff;
-    padding: 20px 30px;
-    border-bottom: 1px solid #eee;
+    padding: 24px 32px;
+    border-bottom: 2px solid #f8f9fa;
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
-    gap: 20px;
-    flex-wrap: wrap;
+    align-items: center; /* Better vertical alignment */
+    gap: 24px;
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
     border-radius: 20px 20px 0 0;
 }
 
 .header-title-group {
     display: flex;
-    flex-direction: column;
-    gap: 4px;
+    align-items: center;
+    gap: 16px;
+    flex: 1 1 auto;
+    min-width: max-content;
+}
+
+.header-mutuelle-logo {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    background: #fff;
+    padding: 2px;
+    display: none; /* Changed by JS */
+}
+
+.header-actions-group {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    flex: 1 1 auto;
+    justify-content: flex-end; /* Push items to the right */
 }
 
 .header-sub-title {
+    display: block;
     font-size: 0.8rem;
     color: #6c757d;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1px;
+    margin-bottom: 4px;
 }
 
 .header-main-title {
-    font-size: 1.5rem;
-    font-weight: 850;
+    font-size: 1.4rem;
+    font-weight: 800;
     color: #212529;
-    font-family: 'Outfit', sans-serif;
+    font-family: inherit;
+    margin: 0;
 }
 
 .btn-back-formal {

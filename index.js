@@ -8,8 +8,10 @@ function createWindow() {
     minWidth: 1024,
     minHeight: 768,
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false
+      nodeIntegration: false,
+      contextIsolation: true,
+      sandbox: false,
+      preload: path.join(__dirname, 'preload.js')
     },
     icon: path.join(__dirname, 'assets', 'icon.png'),
     backgroundColor: '#fafafa',
@@ -22,8 +24,10 @@ function createWindow() {
     mainWindow.show();
   });
 
-  // Open DevTools to see console logs
-  mainWindow.webContents.openDevTools();
+  // Only open DevTools in development
+  if (process.argv.includes('--dev') || process.env.NODE_ENV === 'development') {
+    mainWindow.webContents.openDevTools();
+  }
 }
 
 app.whenReady().then(() => {
