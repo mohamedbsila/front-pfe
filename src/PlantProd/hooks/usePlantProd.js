@@ -1,4 +1,5 @@
 import { plantsApi, plantVarietiesApi, productionRecordsApi } from '../services/index.js';
+import { wsManager } from '../../shared/services/index.js';
 import { formatDate, escapeHtml } from '../../shared/utils/index.js';
 
 export function createPlantProdStore() {
@@ -29,7 +30,22 @@ export function createPlantProdStore() {
         return () => listeners.delete(listener);
     };
 
-    const loadPlants = async () => {
+    const initWebSocketListeners = () => {
+        wsManager.on('plant_changed', (data) => {
+            console.log('🔌 [PlantProd Store] Received plant_changed:', data);
+            loadPlants(true);
+        });
+        
+        wsManager.on('refresh_data', (data) => {
+            if (data?.entity === 'plants') {
+                loadPlants(true);
+            }
+        });
+    };
+
+    initWebSocketListeners();
+
+    const loadPlants = async (silent = false) => {
         setState({ isLoading: true, error: null });
         try {
             const plants = await plantsApi.getAll();

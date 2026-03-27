@@ -19,7 +19,7 @@ export class LaborForceTable {
         const tableBody = this.container.querySelector('#laborTableBody');
         if (!tableBody) {
             try {
-                const response = await fetch('pages/mutuelle/labor_force.html');
+                const response = await fetch('src/Mutuelle/pages/labor_force.html');
                 const html = await response.text();
                 this.container.innerHTML = html;
             } catch (e) {

@@ -19,7 +19,7 @@ export class WorkshopTable {
         const tableBody = this.container.querySelector('#workshopTableBody');
         if (!tableBody) {
             try {
-                const response = await fetch('pages/mutuelle/workshop.html');
+                const response = await fetch('src/Mutuelle/pages/workshop.html');
                 const html = await response.text();
                 this.container.innerHTML = html;
             } catch (e) {

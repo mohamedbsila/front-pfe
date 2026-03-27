@@ -1,4 +1,5 @@
 import { employesClient } from '../services/index.js';
+import { wsManager } from '../../shared/services/index.js';
 
 class EmployesStore {
     constructor() {
@@ -8,9 +9,27 @@ class EmployesStore {
             attendance: [],
             loading: false,
             error: null,
-            selectedEmployee: null
+            selectedEmployee: null,
+            currentMutuelleId: null
         };
         this.listeners = [];
+        
+        this.initWebSocketListeners();
+    }
+
+    initWebSocketListeners() {
+        wsManager.on('employee_changed', (data) => {
+            console.log('🔌 [Employes Store] Received employee_changed:', data);
+            if (this.state.currentMutuelleId) {
+                this.loadEmployes(this.state.currentMutuelleId, true);
+            }
+        });
+        
+        wsManager.on('refresh_data', (data) => {
+            if (data?.entity === 'employees' && this.state.currentMutuelleId) {
+                this.loadEmployes(this.state.currentMutuelleId, true);
+            }
+        });
     }
 
     getState() {
@@ -33,8 +52,9 @@ class EmployesStore {
         this.listeners.forEach(l => l(this.state));
     }
 
-    async loadEmployes(mutuelleId) {
-        this.setState({ loading: true, error: null });
+    async loadEmployes(mutuelleId, silent = false) {
+        if (!silent) this.setState({ loading: true, error: null });
+        this.setState({ currentMutuelleId: mutuelleId });
         try {
             const [qar, ar] = await Promise.all([
                 employesClient.getAllQar(mutuelleId),

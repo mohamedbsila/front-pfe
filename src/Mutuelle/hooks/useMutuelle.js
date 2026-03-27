@@ -1,4 +1,5 @@
 import { mutuelleClient, membersApi, employeeQarApi, employeeArApi, laborDataApi, workshopDataApi } from '../services/index.js';
+import { wsManager } from '../../shared/services/index.js';
 import { getCurrentYear, parseProFloat } from '../../shared/utils/index.js';
 
 export function createMutuelleStore() {
@@ -25,7 +26,38 @@ export function createMutuelleStore() {
         return () => listeners.delete(listener);
     };
 
-    const loadMutuelles = async () => {
+    const initWebSocketListeners = () => {
+        wsManager.on('mutuelle_changed', (data) => {
+            console.log('🔌 [Mutuelle Store] Received mutuelle_changed:', data);
+            loadMutuelles(true);
+        });
+        
+        wsManager.on('labor_data_changed', (data) => {
+            console.log('🔌 [Labor Store] Received labor_data_changed:', data);
+            const state = getState();
+            if (state.selectedMutuelleId) {
+                loadLaborData(state.selectedMutuelleId, state.currentYear);
+            }
+        });
+        
+        wsManager.on('workshop_changed', (data) => {
+            console.log('🔌 [Workshop Store] Received workshop_changed:', data);
+            const state = getState();
+            if (state.selectedMutuelleId) {
+                loadWorkshopData(state.selectedMutuelleId, state.currentYear);
+            }
+        });
+        
+        wsManager.on('refresh_data', (data) => {
+            if (data?.entity === 'mutuelles') {
+                loadMutuelles(true);
+            }
+        });
+    };
+
+    initWebSocketListeners();
+
+    const loadMutuelles = async (silent = false) => {
         setState({ isLoading: true, error: null });
         try {
             const mutuelles = await mutuelleClient.getAll() || [];

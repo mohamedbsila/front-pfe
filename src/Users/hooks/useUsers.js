@@ -1,4 +1,5 @@
 import { usersApi } from '../services/index.js';
+import { wsManager } from '../../shared/services/index.js';
 import { formatDate, escapeHtml } from '../../shared/utils/index.js';
 
 export function createUsersStore() {
@@ -29,6 +30,21 @@ export function createUsersStore() {
         listeners.add(listener);
         return () => listeners.delete(listener);
     };
+
+    const initWebSocketListeners = () => {
+        wsManager.on('user_changed', (data) => {
+            console.log('🔌 [Users Store] Received user_changed:', data);
+            loadUsers(true);
+        });
+        
+        wsManager.on('refresh_data', (data) => {
+            if (data?.entity === 'users') {
+                loadUsers(true);
+            }
+        });
+    };
+
+    initWebSocketListeners();
 
     const loadUsers = async (silent = false) => {
         if (!silent) setState({ isLoading: true, error: null });

@@ -34,9 +34,9 @@ export class SubSelection {
     static OPTIONS = [
         // ✅ FIXED ICONS: Verified against Lucide v0.383 (the version loaded in Claude artifacts)
         { label: 'الإنتاج النباتي', icon: 'sprout', desc: 'Gestion des cultures et récoltes', category: 'production' },
-        { label: 'تربية الماشية', icon: 'cow', desc: 'Suivi du bétail et santé animale', category: 'production' },
+        { label: 'تربية الماشية', icon: 'paw-print', desc: 'Suivi du bétail et santé animale', category: 'production' },
         { label: 'حليب أبقار', icon: 'droplet', desc: 'Collecte et qualité du lait', category: 'production' },
-        { label: 'عجول و عجلات', icon: 'git-branch', desc: 'Gestion du jeune bétail', category: 'production' },
+        { label: 'عجول و عجلات', icon: 'git-merge', desc: 'Gestion du jeune bétail', category: 'production' },
         { label: 'أراضي', icon: 'map', desc: 'Cadastre et exploitation des sols', category: 'foncier' },
         { label: 'قراطل', icon: 'package', desc: 'Stockage et logistique', category: 'logistique' },
         { label: 'أغنام لحم', icon: 'utensils', desc: 'Production ovine bouchère', category: 'production' },
@@ -45,7 +45,7 @@ export class SubSelection {
         { label: 'الورشة', icon: 'wrench', desc: 'Maintenance et équipement', category: 'logistique' },
         { label: 'قائمة الأسعار', icon: 'tags', desc: 'Tarification et économie', category: 'admin' },
         { label: 'قطيع الأبقار', icon: 'clipboard-list', desc: 'Inventaire détaillé bovin', category: 'production' },
-        { label: 'قطيع الأغنام', icon: 'list-checks', desc: 'Inventaire détaillé ovin', category: 'production' },
+        { label: 'قطيع الأغنام', icon: 'check-square', desc: 'Inventaire détaillé ovin', category: 'production' },
         { label: 'الأعلاف', icon: 'wheat', desc: 'Nutrition et stocks fourragers', category: 'logistique' },
         { label: 'أعباء أخرى', icon: 'receipt', desc: 'Frais divers et comptabilité', category: 'admin' },
     ];

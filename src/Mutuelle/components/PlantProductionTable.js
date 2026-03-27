@@ -101,7 +101,7 @@ export class PlantProductionTable {
             const plantRecords = records.filter(r => r.varietyId && (r.varietyId.plantId === plantId || r.varietyId.plant === plantId));
 
             // Load the template
-            const response = await fetch('pages/mutuelle/plant_varieties.html');
+            const response = await fetch('src/Mutuelle/pages/plant_varieties.html');
             const html = await response.text();
             
             // Inject template into the container
@@ -399,7 +399,7 @@ export const initPlantProduction = async function() {
 
     if (!laborContainer.querySelector('.plant-production-container')) {
         try {
-            const response = await fetch('pages/mutuelle/plant_production.html');
+            const response = await fetch('src/Mutuelle/pages/plant_production.html');
             laborContainer.innerHTML = await response.text();
             
             const sidebar = document.getElementById('dashboardSidebar');

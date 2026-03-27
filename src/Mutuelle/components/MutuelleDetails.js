@@ -26,7 +26,7 @@ export class MutuelleDetails {
 
         // Load the details fragment
         try {
-            const response = await fetch('pages/mutuelle/mutuelle_details.html');
+            const response = await fetch('src/Mutuelle/pages/mutuelle_details.html');
             const html = await response.text();
             
             this.container.innerHTML = html;

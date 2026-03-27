@@ -9,8 +9,8 @@ import { usersStore, UserTable, userModal, userDetails, userStats } from './User
 import { mutuelleStore, laborDataStore, workshopDataStore, MutuelleList, MutuelleDetails, SubSelection, LaborForceTable, WorkshopTable, addMutuelleModal, YearSelector, initPlantProduction } from './Mutuelle/index.js';
 import { plantsApi, plantVarietiesApi, productionRecordsApi, addPlantModal } from './PlantProd/index.js';
 import { employesStore, EmployesTable } from './Employes/index.js';
-import { apiClient, CustomModal } from './shared/index.js';
-import { WS_URL } from './config.js';
+import { apiClient, CustomModal, wsManager } from './shared/index.js';
+import './config.js';
 
 // Make available globally for backward compatibility
 window.authService = authService;
@@ -46,19 +46,31 @@ window.CustomModal = CustomModal;
  * Sub-section configuration map.
  * Each entry describes a Mutuelle sub-view that shares the same layout logic.
  */
+const PAGE_MAPPING = {
+    'dashboard': 'src/pages/dashboard.html',
+    'mutuelle/mutuelle': 'src/Mutuelle/pages/mutuelle.html',
+    'mutuelle': 'src/Mutuelle/pages/mutuelle.html',
+    'employees': 'src/Employes/pages/employees.html',
+    'programs': 'src/shared/pages/programs.html',
+    'reports': 'src/shared/pages/reports.html',
+    'resources': 'src/shared/pages/resources.html',
+    'users': 'src/Users/pages/users.html',
+    'settings': 'src/shared/pages/settings.html'
+};
+
 const SUB_SECTIONS = {
     'الأعلاف': {
-        template: 'pages/mutuelle/fodder.html',
+        template: 'src/Mutuelle/pages/fodder.html',
         headerText: "Indicateurs d'Alimentation / الأعلاف",
         stateKey: 'isFodderOpen'
     },
     'قطيع الأبقار': {
-        template: 'pages/mutuelle/cattle_herd.html',
+        template: 'src/Mutuelle/pages/cattle_herd.html',
         headerText: 'Indicateurs de Production / قطيع الأبقار',
         stateKey: 'isCattleHerdOpen'
     },
     'الإنتاج النباتي': {
-        template: 'pages/mutuelle/plant_production.html',
+        template: 'src/Mutuelle/pages/plant_production.html',
         headerText: 'Indicateurs de Production / الإنتاج النباتي',
         stateKey: 'isPlantProductionOpen'
     }
@@ -136,7 +148,7 @@ class App {
         
         // Load login page HTML
         try {
-            const response = await fetch('pages/login.html');
+            const response = await fetch('src/Auth/pages/login.html');
             if (response.ok) {
                 const html = await response.text();
                 loginPage.innerHTML = html;
@@ -255,13 +267,13 @@ class App {
         
         try {
             // Load sidebar
-            const sidebarResponse = await fetch('pages/sidebar.html');
+            const sidebarResponse = await fetch('src/shared/pages/layout/sidebar.html');
             const sidebarHtml = await sidebarResponse.text();
             document.getElementById('sidebarContainer').innerHTML = sidebarHtml;
             this.updateSidebarFooter();
             
             // Load topbar
-            const topbarResponse = await fetch('pages/topbar.html');
+            const topbarResponse = await fetch('src/shared/pages/layout/topbar.html');
             const topbarHtml = await topbarResponse.text();
             document.getElementById('topbarContainer').innerHTML = topbarHtml;
             
@@ -283,8 +295,11 @@ class App {
             // Save to localStorage
             localStorage.setItem('lastPage', pageName);
             
+            // Determine page path from mapping
+            const pagePath = PAGE_MAPPING[pageName] || `pages/${pageName}.html`;
+            
             // Load page content
-            const response = await fetch(`pages/${pageName}.html`);
+            const response = await fetch(pagePath);
             const html = await response.text();
             document.getElementById('contentArea').innerHTML = html;
             
@@ -340,44 +355,23 @@ class App {
     // ---------- WebSocket Management ----------
 
     initWebSockets() {
-        if (this.socket) return;
-        const token = localStorage.getItem('access_token');
-        if (!token) return;
+        wsManager.connect();
+        
+        wsManager.on('user_changed', (data) => {
+            console.log('Real-time user update received:', data);
+            this.handleUserChange();
+        });
 
-        try {
-            this.socket = io(WS_URL, {
-                auth: { token }
-            });
-
-            this.socket.on('connect', () => {
-                console.log('🔌 Connected to WebSocket server');
-            });
-
-            this.socket.on('user_changed', (data) => {
-                console.log('Real-time update received:', data);
-                this.handleUserChange();
-            });
-
-            this.socket.on('plant_changed', (data) => {
-                console.log('Real-time plant update received:', data);
-                if (document.getElementById('plantCardsContainer')) {
-                    this.initPlantProductionSection();
-                }
-            });
-
-            this.socket.on('disconnect', () => {
-                console.log('🔌 Disconnected from WebSocket server');
-            });
-        } catch (e) {
-            console.warn('WebSocket init failed:', e);
-        }
+        wsManager.on('plant_changed', (data) => {
+            console.log('Real-time plant update received:', data);
+            if (document.getElementById('plantCardsContainer')) {
+                this.initPlantProductionSection();
+            }
+        });
     }
 
     closeWebSockets() {
-        if (this.socket) {
-            this.socket.disconnect();
-            this.socket = null;
-        }
+        wsManager.disconnect();
     }
 
     async handleUserChange() {
@@ -722,7 +716,7 @@ class App {
         
         if (grid && laborContainer) {
             try {
-                const response = await fetch('pages/mutuelle/labor_force.html');
+                const response = await fetch('src/Mutuelle/pages/labor_force.html');
                 laborContainer.innerHTML = await response.text();
                 grid.style.display = 'none';
                 if (sidebar) sidebar.style.display = 'none';
@@ -790,7 +784,7 @@ class App {
 
         if (grid && laborContainer) {
             try {
-                const response = await fetch('pages/mutuelle/workshop.html');
+                const response = await fetch('src/Mutuelle/pages/workshop.html');
                 laborContainer.innerHTML = await response.text();
                 grid.style.display = 'none';
                 if (sidebar) sidebar.style.display = 'none';
