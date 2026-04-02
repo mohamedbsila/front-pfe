@@ -34,7 +34,6 @@ export class SubSelection {
     static OPTIONS = [
         // ✅ FIXED ICONS: Verified against Lucide v0.383 (the version loaded in Claude artifacts)
         { label: 'الإنتاج النباتي', icon: 'sprout', desc: 'Gestion des cultures et récoltes', category: 'production' },
-        { label: 'تربية الماشية', icon: 'paw-print', desc: 'Suivi du bétail et santé animale', category: 'production' },
         { label: 'حليب أبقار', icon: 'droplet', desc: 'Collecte et qualité du lait', category: 'production' },
         { label: 'عجول و عجلات', icon: 'git-merge', desc: 'Gestion du jeune bétail', category: 'production' },
         { label: 'أراضي', icon: 'map', desc: 'Cadastre et exploitation des sols', category: 'foncier' },
@@ -102,7 +101,7 @@ export class SubSelection {
 
     _renderGrid(grid, categoryFilter, searchQuery) {
         const filtered = this._filterOptions(categoryFilter, searchQuery);
-        
+
         grid.removeEventListener('click', this._handleGridClick);
         grid.addEventListener('click', this._handleGridClick);
 
@@ -253,10 +252,10 @@ export class SubSelection {
 
     _filterOptions(categoryFilter, searchQuery) {
         this._suggestion = null;
-        
+
         if (!searchQuery) {
-            return (categoryFilter === 'all') 
-                ? SubSelection.OPTIONS 
+            return (categoryFilter === 'all')
+                ? SubSelection.OPTIONS
                 : SubSelection.OPTIONS.filter(o => o.category === categoryFilter);
         }
 
@@ -264,37 +263,37 @@ export class SubSelection {
 
         if (this.fuse) {
             const fuzzyResults = this.fuse.search(q);
-            
+
             // "Did you mean" logic
             if (fuzzyResults.length > 0) {
                 const topMatch = fuzzyResults[0];
-                const isExact = topMatch.item.label.toLowerCase().includes(q) || 
-                                topMatch.item.desc.toLowerCase().includes(q);
-                
+                const isExact = topMatch.item.label.toLowerCase().includes(q) ||
+                    topMatch.item.desc.toLowerCase().includes(q);
+
                 // If the match is good but not exact, suggest it
                 if (!isExact && topMatch.score < 0.55) {
                     // ✅ Smart Suggestion: Detect Language
                     // If searching Arabic chars, suggest Label. Otherwise suggest from Desc (French)
                     const isArabicQuery = /[\u0600-\u06FF]/.test(q);
                     const sourceText = isArabicQuery ? topMatch.item.label : topMatch.item.desc;
-                    
+
                     // ✅ Word-only correction: Extract only the word that matched
                     const words = sourceText.split(/\s+/);
                     const bestWord = words.find(w => {
-                        const wordNorm = w.toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()]/g,"");
-                        return q.length > 2 && (wordNorm.includes(q) || q.includes(wordNorm) || 
-                               this.fuse.search(wordNorm).length > 0);
+                        const wordNorm = w.toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, "");
+                        return q.length > 2 && (wordNorm.includes(q) || q.includes(wordNorm) ||
+                            this.fuse.search(wordNorm).length > 0);
                     }) || words[0];
 
                     this._suggestion = bestWord;
                 }
             }
-            
+
             return fuzzyResults.map(r => r.item);
         }
 
         // Fallback to simple filtering if Fuse is missing
-        return SubSelection.OPTIONS.filter(o => 
+        return SubSelection.OPTIONS.filter(o =>
             o.label.toLowerCase().includes(q) || o.desc.toLowerCase().includes(q)
         );
     }
